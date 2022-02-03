@@ -1,5 +1,3 @@
-import pandas
-
 class consumable:
 	movies = list()
 	books = list()
