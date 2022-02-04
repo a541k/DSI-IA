@@ -14,6 +14,7 @@ class consumable:
 		'''
 
 
+#--------------------------------------------------------------------------------add
 	def add_consumable(self):
 
 		choice = input(self.text)
@@ -37,7 +38,7 @@ class consumable:
 		if choice == '3':
 			consumable.series.append(take_input())
 
-
+#--------------------------------------------------------------------------------edit
 	def edit_consumable(self):
 		choice = input(self.text)
 		name = input("\nEnter Product name to be edited: ")
@@ -65,6 +66,7 @@ class consumable:
 					    consumable.books[index]["Rating"] = new_rating
 					if end_date is not None:
 					    consumable.books[index]["end date"] = end_date
+					break
 		if choice =='2':
 			inc_consumed_time, inc_days_consumed, new_rating, end_date = input_edits()
 
@@ -76,6 +78,7 @@ class consumable:
 					    consumable.movies[index]["Rating"] = new_rating
 					if end_date is not None:
 					    consumable.movies[index]["end date"] = end_date
+					break
 		if choice =='3':
 			inc_consumed_time, inc_days_consumed, new_rating, end_date = input_edits()
 
@@ -87,12 +90,14 @@ class consumable:
 					    consumable.series[index]["Rating"] = new_rating
 					if end_date is not None:
 					    consumable.series[index]["end date"] = end_date
+					break
 
 
 
 
 
 
+#--------------------------------------------------------------------------------see list
 	def see_list(self):
 		choice = input(self.text)
 
@@ -103,6 +108,29 @@ class consumable:
 			print(consumable.movies)
 		if choice == '3':
 			print(consumable.series)
+
+
+#--------------------------------------------------------------------------------delete
+	def delete_consumbale(self):
+		choice = input(self.text)
+		name = input("\nEnter Product name to be deleted: ")
+		if choice =='1':
+			for index,item in enumerate(consumable.books):
+				if item.get("Name") == name:
+					del consumable.books[index]
+		if choice =='2':
+			for index,item in enumerate(consumable.movies):
+				if item.get("Name") == name:
+					del consumable.movies[index]
+		if choice =='3':
+			for index,item in enumerate(consumable.series):
+				if item.get("Name") == name:
+					del consumable.series[index]
+
+
+
+
+
 
 
 
@@ -119,5 +147,7 @@ obj = consumable()
 obj.add_consumable()
 obj.see_list()
 
-obj.edit_consumable()
+#obj.edit_consumable()
+#obj.see_list()
+obj.delete_consumbale()
 obj.see_list()
