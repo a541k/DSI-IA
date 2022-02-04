@@ -17,15 +17,13 @@ class consumable:
 		choice = input(self.text)
 
 		def take_input():
-			name = input("\nEnter Book name: ")
+			name = input("\nEnter name: ")
 			rating = input("\nEnter rating: ")
-			days_consumed = input("\n Enter days consumed: ")
-			start_date = input("\n Enter Start date: ")
-			end_date = input("\n Enter End date: ")
+			days_consumed = input("\nEnter days consumed: ")
+			start_date = input("\nEnter Start date: ")
+			end_date = input("\nEnter End date: ")
 
-
-			keys = ["Name", "rating", "days_consumed", "start_date", "end_date"]
-
+			keys = ["Name", "Rating", "Days consumed", "Start date", "end date"]
 			return(dict(zip(keys, [name, rating, days_consumed, start_date, end_date])))
 
 
@@ -36,6 +34,21 @@ class consumable:
 			consumable.movies.append(take_input())
 		if choice == '3':
 			consumable.series.append(take_input())
+
+
+	def edit_consumable(self):
+		choice = input(self.text)
+		name = input("\nEnter Product name to be edited: ")
+
+		def input_edits():
+			inc_consumed_time = input("\nEnter added hr's of consumption: ")
+			inc_days_consumed = input("\nAdd a day to days of consumption(1=Yes/0=No): ")
+			new_rating = input("\nNew rating: ")
+			end_date = input("\nEnter consumption ending date: ")
+			return(inc_consumed_time, inc_days_consumed, new_rating, end_date)
+
+
+
 
 
 	def see_list(self):
