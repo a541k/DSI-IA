@@ -1,4 +1,5 @@
 import pandas
+import time
 class consumable:
 	movies = list()
 	books = list()
@@ -14,11 +15,13 @@ class consumable:
 	#total_consumption_time
 
 
-	text = ''' Enter: 1 for Books
-		2 for Movies
-		3 for Series
+	text = '''    Enter:
+	-----------
+	1 for Books
+	2 for Movies
+	3 for Series
 
-		'''
+	'''
 
 
 
@@ -29,10 +32,40 @@ class consumable:
 		choice = input(self.text)
 
 		def take_input():#returns dictionary of inputs
-			name = input("Enter name: ")
-			rating = float(input("Enter rating: "))
-			consumption_time = int(input("Enter total consumption time(hr's): "))
-			days_consumed = int(input("Enter days consumed: "))
+			name = ''
+			while not name:
+				name = input("Enter name: ")
+
+			rating = 'abc'
+			while (not rating.isdigit()):
+				if not rating:
+					break
+				rating = input("Enter rating: ")
+			if rating:
+				rating = float(rating)
+			else:
+				rating = 0;
+
+			consumption_time = 'abc'
+			while (not consumption_time.isdigit()):
+				if not consumption_time:
+					break
+				consumption_time = input("Enter total consumption time(hr's): ")
+			if consumption_time:
+				consumption_time = int(consumption_time)
+			else:
+				consumption_time = 0
+
+			days_consumed = 'abc'
+			while (not days_consumed.isdigit()):
+				if not days_consumed:
+					break
+				days_consumed = input("Enter days consumed: ")
+			if days_consumed:
+				days_consumed = int(days_consumed)
+			else:
+				days_consumed = 0
+
 			start_date = input("Enter Start date: ")
 			end_date = input("Enter End date: ")
 
@@ -68,6 +101,10 @@ class consumable:
 
 			consumable.series.append(dictionary)
 
+		print('\n','>'*2, "Consumable Added.")
+		print("-"*30)
+		time.sleep(2)
+
 
 
 
@@ -83,13 +120,35 @@ class consumable:
 	def edit_consumable(self):
 		choice = input(self.text)
 		name = input("\nEnter Product name to be edited: ")
+		name_matched = False
+
+		def alert(name):
+			print(">"*10,name, "was not found!!")
+			time.sleep(3)
+
 
 
 
 		def input_edits():
-			inc_consumed_time = int(input("Enter added hr's of consumption: "))
-			inc_days_consumed = input("Add a day to days of consumption(1=Yes/0=No): ")
-			new_rating = float(input("New rating: "))
+
+			inc_consumed_time = 'abc'
+			while (not inc_consumed_time.isdigit()):
+				inc_consumed_time = input("Enter added hr's of consumption: ")
+			inc_consumed_time = int(inc_consumed_time)
+
+			inc_days_consumed = ''
+			while inc_days_consumed !='0' and  inc_days_consumed !='1':
+				inc_days_consumed = input("Add a day to days of consumption(1=Yes/0=No): ")
+
+			new_rating = 'abc'
+			while (not new_rating.isdigit()):
+				if not new_rating:
+					break
+				new_rating = input("Enter new rating: ")
+			if new_rating:
+				new_rating = float(new_rating)
+			else: new_rating = 0
+
 			end_date = input("Enter consumption ending date: ")
 			return(inc_consumed_time, inc_days_consumed, new_rating, end_date)
 
@@ -97,11 +156,11 @@ class consumable:
 
 
 		if choice =='1':
-			inc_consumed_time, inc_days_consumed, new_rating, end_date = input_edits()
 
 			for index,item in enumerate(consumable.books):
-
 				if item.get("Name") == name:#select the dictionary to be edited
+					name_matched = True
+					inc_consumed_time, inc_days_consumed, new_rating, end_date = input_edits()
 
 					if inc_days_consumed == "1":
 						consumable.books[index]["Days consumed"] += 1
@@ -114,17 +173,21 @@ class consumable:
 
 					if end_date is not None:
 					    consumable.books[index]["end date"] = end_date
-
 					break
+			if not name_matched: alert(name)
+
 
 
 		if choice =='2':
-			inc_consumed_time, inc_days_consumed, new_rating, end_date = input_edits()
+
 
 			for index,item in enumerate(consumable.movies):
 
-				if item.get("Name") == name:#select the dictionary to be edited
 
+				if item.get("Name") == name:
+					#select the dictionary to be edited
+					name_matched = True
+					inc_consumed_time, inc_days_consumed, new_rating, end_date = input_edits()
 					if inc_days_consumed == "1":
 						consumable.movies[index]["Days consumed"] += 1
 						consumable.movies[index]["Consumption time"] += inc_consumed_time
@@ -138,14 +201,17 @@ class consumable:
 					    consumable.movies[index]["end date"] = end_date
 
 					break
+			if not name_matched: alert(name)
 
 
 		if choice =='3':
-			inc_consumed_time, inc_days_consumed, new_rating, end_date = input_edits()
+
 
 			for index,item in enumerate(consumable.series):
 
 				if item.get("Name") == name:
+					name_matched = True
+					inc_consumed_time, inc_days_consumed, new_rating, end_date = input_edits()
 
 					if inc_days_consumed == "1":
 						consumable.series[index]["Days consumed"] += 1
@@ -159,6 +225,8 @@ class consumable:
 					if end_date is not None:
 					    consumable.series[index]["end date"] = end_date
 					break
+			if not name_matched: alert(name)
+		print("-"*30)
 
 
 
@@ -168,19 +236,42 @@ class consumable:
 #--------------------------------------------------------------------------------see list
 	def see_list(self):
 		choice = input(self.text)
+		print("-"*30)
+		def alert():
+			print("No item was not found!!")
+			time.sleep(2)
+
+
+
+
 
 		if choice == '1':
-			for item in self.books:
+			for i,item in enumerate(self.books):
+				print("Book-", i+1)
 				dataframe = pandas.DataFrame(list(item.items()))
+				dataframe.columns = ["-"*20, '-'*3]
 				print(dataframe.to_string(index = False))
+			if len(self.books)==0:
+					alert()
+
 		if choice == '2':
-			for item in self.movies:
+			for i,item in enumerate(self.movies):
+				print("Movie-", i+1)
 				dataframe = pandas.DataFrame(list(item.items()))
+				dataframe.columns = ["-"*20, '-'*3]
 				print(dataframe.to_string(index = False))
+			if len(self.movies)==0:
+					alert()
+
 		if choice == '3':
-			for item in self.series:
+			for i,item in enumerate(self.series):
+				print("Series-", i+1)
 				dataframe = pandas.DataFrame(list(item.items()))
+				dataframe.columns = ["-"*20, '-'*3]
 				print(dataframe.to_string(index = False))
+				if len(self.series)==0:
+					alert()
+		print("-"*30)
 
 
 
@@ -194,18 +285,37 @@ class consumable:
 	def delete_consumbale(self):
 		choice = input(self.text)
 		name = input("\nEnter Product name to be deleted: ")
+		name_matched = False
+
+		def alert(name):
+			print(">"*10,name, "was not found!!")
+			time.sleep(2)
+
 		if choice =='1':
 			for index,item in enumerate(consumable.books):
 				if item.get("Name") == name:
 					del consumable.books[index]
+					name_matched = True
+			if not name_matched: alert(name)
+
+
+
 		if choice =='2':
 			for index,item in enumerate(consumable.movies):
 				if item.get("Name") == name:
 					del consumable.movies[index]
+					name_matched = True
+			if not name_matched: alert(name)
+
+
 		if choice =='3':
 			for index,item in enumerate(consumable.series):
 				if item.get("Name") == name:
+					print(name, " was deleted from series list!")
 					del consumable.series[index]
+					name_matched = True
+			if not name_matched: alert(name)
+		print("-"*30)
 
 
 
@@ -225,7 +335,7 @@ class consumable:
 
 		i=0
 		for item in consumable.books:
-			if item.get("Rating") is not None:
+			if item.get("Rating") is not None and item.get("Rating")>=0:
 				i+=1
 				avg_book_rating += item.get("Rating")
 		if i!=0:
@@ -249,7 +359,9 @@ class consumable:
 		if k!=0:
 			avg_series_rating = avg_series_rating / k
 
-
+		temp = i+j+k;
+		if temp ==0:
+			temp = 1;
 
 		details = {
 				"Total number of consumables": len(self.books)+len(self.series)+len(self.movies),
@@ -261,25 +373,31 @@ class consumable:
 				"Series Consumption time" : self.series_consumption_time,
 				"Books Consumption time": self.books_consumption_time,
 				"Total days of consumption" : self.movie_days + self.book_days + self.series_days,
-				"Avg rating of all consumables": (avg_movie_rating + avg_series_rating + avg_book_rating)/(i+j+k),
+				"Avg rating of all consumables": (avg_movie_rating + avg_series_rating + avg_book_rating)/(temp),
 				"Avg Movie rating" : avg_movie_rating,
 				"Avg Series rating" : avg_series_rating,
 				"Avg Book rating" : avg_book_rating
 				}
 		#print(details)
 		dataframe = pandas.DataFrame(list(details.items()))
+		dataframe.columns = ["-"*30, "-"*3 ]
 		print(dataframe.to_string(index = False))
+		print("-"*30)
+		time.sleep(3)
 
 
 
 
-s = ''' Enter: 1 to Add a consumable
-		2 to Edit a consumable
-		3 to Delete a consumable
-		4 to See the list of consumables individually
-		5 to See overall info
-		6 to exit
-		'''
+s = '''    Menu:
+	------------------
+	1. Add consumable
+	2. Edit consumable
+	3. Delete consumable
+	4. View category wise
+	5. View overall info
+	6. Exit
+
+	'''
 obj = consumable()
 
 while 1:
