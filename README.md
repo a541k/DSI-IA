@@ -49,3 +49,4 @@ h. Individual number of consumable of each type
 After creating the application, assume you have nothing at the moment. Then add 10
 consumables with at least 2 from each type. Edit some of them so that the overall info can
 be produced visibly.
+## The python script can be run on Python 3.
